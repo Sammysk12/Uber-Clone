@@ -260,3 +260,153 @@ This endpoint is used to log out the currently authenticated user by invalidatin
 
 - This endpoint requires a valid token in the `Authorization` header or cookie.
 - The token is added to a blacklist to prevent further use.
+
+
+
+## Endpoint: `/api/captains/register`
+
+### Description
+
+This endpoint is used to register a new captain in the system.
+
+### Method
+
+`POST`
+
+### Request Body
+
+The request body must be in JSON format and include the following fields:
+
+| Field                | Type   | Required | Description                                    |
+| -------------------- | ------ | -------- | ---------------------------------------------- |
+| `fullName.firstName` | String | Yes      | The first name of the captain (min 3 characters). |
+| `fullName.lastName`  | String | No       | The last name of the captain (min 3 characters).  |
+| `email`              | String | Yes      | The email address of the captain (must be valid). |
+| `password`           | String | Yes      | The password for the captain (min 6 characters).  |
+| `vehicle.color`      | String | Yes      | The color of the captain's vehicle (min 3 characters). |
+| `vehicle.plate`      | String | Yes      | The license plate of the captain's vehicle (min 3 characters). |
+| `vehicle.capacity`   | Number | Yes      | The capacity of the captain's vehicle (min 1). |
+| `vehicle.vehicleType`| String | Yes      | The type of the captain's vehicle (must be one of `car`, `bike`, or `auto`). |
+
+### Example Request
+
+```json
+{
+  "fullName": {
+    "firstName": "Jane",
+    "lastName": "Doe"
+  },
+  "email": "janedoe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Response
+
+#### Success (201 Created)
+
+```json
+{
+  "message": "Captain registered successfully",
+  "captain": {
+    "fullName": {
+      "firstName": "Jane",
+      "lastName": "Doe"
+    },
+    "email": "janedoe@example.com",
+    "password": "janepaswword@example12345",
+    "status" : "inactive/active",
+    "vehicle" : {
+      "color": "White",
+      "plate": "MH 01 AB 1234",
+      "capacity" : 4,
+      "vehicleType" : "car"
+    },
+    "id": "unique_captain_id",
+  },
+  "token": "token_example"
+}
+```
+
+#### Error (400 Bad Request)
+
+```json
+{
+  "error": "All fields are required!"
+}
+```
+
+#### Error (400 Bad Request)
+
+```json
+{
+  "error": "Captain already exists!"
+}
+```
+
+#### Error (400 Bad Request)
+
+```json
+{
+  "error": "This email registered to a user already!"
+}
+```
+
+#### Error (422 Unprocessable Entity)
+
+```json
+{
+  "errors": [
+    {
+      "msg": "Invalid Email",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "First name must be at least 3 characters long",
+      "param": "fullName.firstName",
+      "location": "body"
+    },
+    {
+      "msg": "Password must be at least 6 characters long",
+      "param": "password",
+      "location": "body"
+    },
+    {
+      "msg": "Color must be at least 3 characters long",
+      "param": "vehicle.color",
+      "location": "body"
+    },
+    {
+      "msg": "Plate must be at least 3 characters long",
+      "param": "vehicle.plate",
+      "location": "body"
+    },
+    {
+      "msg": "Capacity must be at least 1",
+      "param": "vehicle.capacity",
+      "location": "body"
+    },
+    {
+      "msg": "Invalid vehicle type",
+      "param": "vehicle.vehicleType",
+      "location": "body"
+    }
+  ]
+}
+```
+
+### Notes
+
+- Ensure that the `email` field is unique and not already registered as a user.
+- Passwords are hashed before being stored in the database.
+- The `lastName` field is optional but must meet the minimum length requirement if provided.
+- The `vehicleType` must be one of the allowed values: `car`, `bike`, or `auto`.
+
+---
