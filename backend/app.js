@@ -11,6 +11,9 @@ const dotenv = require('dotenv');
 //cross origin server connect
 const cors = require('cors');
 
+//importing to parse the cookies from the request
+const cookieParser = require('cookie-parser');
+
 
 //connectDb function imported to connect to the database
 const connectDb = require('./configs/db.js');
@@ -28,6 +31,7 @@ connectDb();
 dotenv.config();
 
 app.use(cors());
+app.use(cookieParser());
 
 //simple callback for server start message
 app.get('/', (req,res)=>{
