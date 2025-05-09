@@ -16,8 +16,11 @@ const registerUser = async(req, res, next) => {
     }
 
     const {fullName, email, password} = req.body;
+    const existingUser = await User.find({email});
+    if(existingUser){
+        return res.status(400).json({message: 'User already exists!'})
+    }
 
-    console.log({fullName, email, password})
     const hashedPassword = await User.hashPassword(password);
 
     const user = await createUser({
@@ -27,7 +30,7 @@ const registerUser = async(req, res, next) => {
         password : hashedPassword,
     })
 
-    const token = User.generateAuthToken();
+    const token = user.generateAuthToken();
 
     return res.status(201).json({user: user, token: token});
 

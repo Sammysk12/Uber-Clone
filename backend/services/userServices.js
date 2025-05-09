@@ -19,7 +19,7 @@ const createUser = async({firstName, lastName, email, password}) =>{
     })
 
     return user;
-
+    
 } 
 
 module.exports ={

@@ -20,6 +20,7 @@ const connectDb = require('./configs/db.js');
 
 //routes for routing on different api endpoints
 const userRoutes = require('./routes/userRoutes.js')
+const captainRoutes = require('./routes/captainRoutes.js')
 
 //some inbuilt middlwares to parse the json data
 app.use(express.json())
@@ -38,7 +39,9 @@ app.get('/', (req,res)=>{
     res.send("Sever is running!");
 });
 
-app.use('/api/users', userRoutes)
+//Routing the api endpoints to the respective routes
+app.use('/api/users', userRoutes);
 
+app.use('/api/captains', captainRoutes);
 
 module.exports = app;

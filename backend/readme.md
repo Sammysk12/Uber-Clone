@@ -57,6 +57,14 @@ The request body must be in JSON format and include the following fields:
 }
 ```
 
+#### Error (400 Bad Request)
+
+```json
+{
+  "error": "User already exists!"
+}
+```
+
 #### Error (422 Unprocessable Entity)
 
 ```json
