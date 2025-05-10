@@ -7,10 +7,12 @@ import UsersContext from './context/UsersContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <UsersContext>
     <BrowserRouter>
+    <UsersContext>
+    
     <App />
-    </BrowserRouter>
+    
     </UsersContext>
+    </BrowserRouter>
   </StrictMode>,
 )
