@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const Captain = require("../models/captain");
+const Captain = require("../models/captain.js");
 
 const createCaptain = require("../services/captainServices");const User = require("../models/user");
 const BlacklistToken = require("../models/blacklistToken");
@@ -25,6 +25,9 @@ const registerCaptain =  async (req, res) => {
     }
     const hashedPassword = await Captain.hashPassword(password);
 
+    console.log(hashedPassword);
+    console.log({fullName, email, password, vehicle});
+
     const captain = await createCaptain({
         firstName: fullName.firstName,
         lastName : fullName.lastName,
@@ -35,6 +38,8 @@ const registerCaptain =  async (req, res) => {
         capacity: vehicle.capacity, 
         vehicleType: vehicle.vehicleType
     })
+
+    console.log(captain);
 
     const token = captain.generateAuthToken();
 

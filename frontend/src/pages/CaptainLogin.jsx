@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CaptainsDataContext } from "../context/CaptainsContext";
@@ -7,7 +7,7 @@ import { CaptainsDataContext } from "../context/CaptainsContext";
 const CaptainLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const nacigate = useNavigate();
+  const navigate = useNavigate();
 
   const {captain, setCaptain} = useContext(CaptainsDataContext);
 
@@ -19,14 +19,17 @@ const CaptainLogin = () => {
       password,
     }
 
+
+  
     // Send the data to the backend
     const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/captains/login`, captain,);
     if(response.status === 200){
       const data = response.data;
       setCaptain(data.captain);
       localStorage.setItem("token", (data.token));
-      nacigate("/captain-home");
+      navigate("/captain-home");
     }
+   
 
 
     setEmail("");
